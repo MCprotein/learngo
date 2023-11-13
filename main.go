@@ -49,6 +49,9 @@ func main() {
 	totalLength, _ := lenAndUpper("nico")
 	fmt.Println(totalLength)
 
+	totalLength2, upper := lenAndUpperNakedReturn("nico")
+	fmt.Println(totalLength2, upper)
+
 	repeatMe("nico", "lynn", "dal", "marl", "flynn")
 }
 
@@ -68,6 +71,21 @@ func multiply(a, b int) int {
 
 func lenAndUpper(name string) (int, string) {
 	return len(name), strings.ToUpper(name)
+}
+
+/*
+*
+naked return
+*/
+func lenAndUpperNakedReturn(name string) (length int, uppercase string) {
+	/**
+	* defer는 함수가 끝나고 실행된다.
+	 */
+	defer fmt.Println("I'm done")
+
+	length = len(name)
+	uppercase = strings.ToUpper(name)
+	return
 }
 
 /*
