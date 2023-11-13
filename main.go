@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	abc "fmt"
+	"strings"
 
 	"github.com/MCprotein/learngo/something"
 
@@ -38,9 +39,42 @@ func main() {
 	something.UpperSth()
 	something.ExternalPackage()
 	fmt.Println("final Cnt :", something.Cnt)
+
+	fmt.Println(multiply(2, 2))
+	/**
+	* _ 는 무시하고 싶을 때 사용한다.
+	* totalLength, _ := lenAndUpper("nico")
+	* 객체가 아니기때문에 값을 하나만 받을 수는 없다.
+	 */
+	totalLength, _ := lenAndUpper("nico")
+	fmt.Println(totalLength)
+
+	repeatMe("nico", "lynn", "dal", "marl", "flynn")
 }
 
 func init() {
 	fmt.Println("init called in main package")
 	something.Cnt = 1
+}
+
+/*
+*
+func multiply(a int, b int) int {
+인자의 타입이 같으면 아래와 같이 표현할 수 있다.
+*/
+func multiply(a, b int) int {
+	return a * b
+}
+
+func lenAndUpper(name string) (int, string) {
+	return len(name), strings.ToUpper(name)
+}
+
+/*
+*
+javascript의 spread operator와 비슷하다.
+*/
+func repeatMe(words ...string) {
+	fmt.Println(words)
+
 }
