@@ -53,6 +53,9 @@ func main() {
 	fmt.Println(totalLength2, upper)
 
 	repeatMe("nico", "lynn", "dal", "marl", "flynn")
+
+	result := superAdd(1, 2, 3, 4, 5, 6)
+	fmt.Println(result)
 }
 
 func init() {
@@ -95,4 +98,22 @@ javascript의 spread operator와 비슷하다.
 func repeatMe(words ...string) {
 	fmt.Println(words)
 
+}
+
+func superAdd(numbers ...int) int {
+	// for index, number := range numbers {
+	// 	fmt.Println(index, number)
+	// }
+
+	total := 0
+
+	for _, number := range numbers {
+		total += number
+	}
+
+	return total
+
+	// for i := 0; i < len(numbers); i++ {
+	// 	fmt.Println(numbers[i])
+	// }
 }
