@@ -2,6 +2,11 @@ package main
 
 import (
 	"fmt"
+	abc "fmt"
+
+	"github.com/MCprotein/learngo/something"
+
+	"rsc.io/quote/v4"
 )
 
 /*
@@ -21,8 +26,21 @@ func main() {
 
 	name3 := "nico"
 
-	fmt.Println("Hello, World!")
-	fmt.Println(name2)
-	fmt.Println(name3)
+	abc.Println("Hello, World!")
+	abc.Println(name2)
+	abc.Println(name3)
 
+	abc.Println(quote.Go())
+
+	sth_case := something.CaseStruct{}
+	sth_case.UpperValue = "Upper value."
+	fmt.Println("sth_case's UpperValue:", sth_case.UpperValue)
+	something.UpperSth()
+	something.ExternalPackage()
+	fmt.Println("final Cnt :", something.Cnt)
+}
+
+func init() {
+	fmt.Println("init called in main package")
+	something.Cnt = 1
 }
