@@ -71,6 +71,7 @@ func main() {
 
 	array()
 	mapFunc()
+	structFunc()
 }
 
 func init() {
@@ -183,4 +184,20 @@ func mapFunc() {
 	for key, value := range nico {
 		fmt.Println(key, value)
 	}
+}
+
+func structFunc() {
+	/**
+	* struct는 객체를 만들어준다.
+	* 객체를 만들 때는 new를 사용하지 않는다.
+	 */
+	type person struct {
+		name    string
+		age     int
+		favFood []string
+	}
+	favFood := []string{"kimchi", "ramen"}
+	// nico := person{"nico", 18, favFood}
+	nico := person{name: "nico", age: 18, favFood: favFood}
+	fmt.Println(nico.name)
 }
