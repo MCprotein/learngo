@@ -70,6 +70,7 @@ func main() {
 	fmt.Println(canIDrink(16))
 
 	array()
+	mapFunc()
 }
 
 func init() {
@@ -173,4 +174,13 @@ func array() {
 	namess := []string{"nico", "lynn", "dal"}
 	namess = append(namess, "flynn", "oooo")
 	fmt.Println(namess)
+}
+
+func mapFunc() {
+	nico := map[string]string{"name": "nico", "age": "12"}
+	fmt.Println(nico)
+
+	for key, value := range nico {
+		fmt.Println(key, value)
+	}
 }
