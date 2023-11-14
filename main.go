@@ -5,6 +5,7 @@ import (
 	abc "fmt"
 	"strings"
 
+	"github.com/MCprotein/learngo/accounts"
 	"github.com/MCprotein/learngo/something"
 
 	"rsc.io/quote/v4"
@@ -72,6 +73,9 @@ func main() {
 	array()
 	mapFunc()
 	structFunc()
+
+	account := accounts.NewAccount("nico")
+	fmt.Println(account)
 }
 
 func init() {
