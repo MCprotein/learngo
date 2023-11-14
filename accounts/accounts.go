@@ -18,3 +18,16 @@ func NewAccount(owner string) *Account {
 	account := Account{owner: owner, balance: 0}
 	return &account
 }
+
+/*
+Deposit x amount on your account
+function이 아니라 method이다.
+(account Account) 는 receiver라고 부른다.
+*/
+func (account Account) Deposit(amount int) {
+	account.balance += amount
+}
+
+func (account Account) Balance() int {
+	return account.balance
+}

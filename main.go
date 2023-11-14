@@ -75,7 +75,8 @@ func main() {
 	structFunc()
 
 	account := accounts.NewAccount("nico")
-	fmt.Println(account)
+	account.Deposit(10)
+	fmt.Println(account.Balance())
 }
 
 func init() {
