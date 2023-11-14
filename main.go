@@ -25,11 +25,21 @@ func main() {
 	var name2 string = "nico"
 	name2 = "lynn"
 
-	name3 := "nico"
+	/**
+	* &는 메모리 주소를 보여준다.
+	* *는 메모리 주소에 있는 값을 보여준다.
+	* *를 사용하여 해당 메모리 주소에 있는 값을 변경할 수 있다.
+
+	 */
+	name3 := &name2
 
 	abc.Println("Hello, World!")
-	abc.Println(name2)
-	abc.Println(name3)
+	abc.Println(&name2, "name2의 메모리 주소")
+	abc.Println(name3, "name3")
+	abc.Println(*name3, "name3의 메모리 주소에 있는 값")
+
+	*name3 = "dal"
+	abc.Println(name2, "*name3에 의해 변경된 name2")
 
 	abc.Println(quote.Go())
 
