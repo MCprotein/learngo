@@ -68,6 +68,8 @@ func main() {
 	fmt.Println(result)
 
 	fmt.Println(canIDrink(16))
+
+	array()
 }
 
 func init() {
@@ -156,4 +158,19 @@ func canIDrinkSwitch(age int) bool {
 	}
 
 	return false
+}
+
+func array() {
+	names := [5]string{"nico", "lynn", "dal"}
+	names[3] = "alala"
+	names[4] = "alala"
+	fmt.Println(names)
+
+	/**
+	slice도 array긴한데 length가 없다.
+	append는 javascript의 array.prototype.push 와는 다르게 새로운 array를 리턴한다.
+	*/
+	namess := []string{"nico", "lynn", "dal"}
+	namess = append(namess, "flynn", "oooo")
+	fmt.Println(namess)
 }
