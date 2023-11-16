@@ -61,6 +61,10 @@ func (account Account) Owner() string {
 	return account.owner
 }
 
+/*
+fmt.Println(account)를 하면 내장함수 String()을 호출한다.
+이 메소드처럼 String() 메소드를 만들면 내장함수 String()을 오버라이딩할 수 있다.
+*/
 func (account Account) String() string {
 	// return "Whatever you want"
 	return fmt.Sprint(account.Owner(), "'s account.\nHas: ", account.Balance())
