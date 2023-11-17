@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/MCprotein/learngo/accounts"
+	mydict "github.com/MCprotein/learngo/dict"
 	"github.com/MCprotein/learngo/something"
 
 	"rsc.io/quote/v4"
@@ -84,6 +85,15 @@ func main() {
 	}
 	fmt.Println(account.Balance(), account.Owner())
 	fmt.Println(account)
+
+	dictionary := mydict.Dictionary{"first": "First word"}
+	// dictionary["hello"] = "hello"
+	definition, err := dictionary.Search("first")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(definition)
+	}
 
 }
 
