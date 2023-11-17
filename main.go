@@ -107,6 +107,20 @@ func main() {
 		fmt.Println(err2)
 	}
 
+	err3 := dictionary.Update(word, "Second")
+	if err != nil {
+		fmt.Println(err3)
+	}
+	changedValue, _ := dictionary.Search(word)
+	fmt.Println(changedValue)
+	dictionary.Delete(word)
+	deletedValue, err4 := dictionary.Search(word)
+	if err4 != nil {
+		fmt.Println(err4)
+	} else {
+		fmt.Println(deletedValue)
+	}
+
 }
 
 func init() {
