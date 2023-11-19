@@ -4,11 +4,20 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+
+	trackingtime "github.com/MCprotein/learngo/url-checker/tracking-time"
 )
+
+type resultRequest struct {
+	url    string
+	status string
+}
 
 var errRequestFailed = errors.New("Request failed")
 
 func main() {
+	defer trackingtime.Trackingtime()()
+
 	urls := []string{
 		"https://www.naver.com/",
 		"https://www.google.com/",
@@ -22,31 +31,32 @@ func main() {
 	}
 
 	results := map[string]string{}
-	/*
-		make: map을 만들어주는 함수
-	*/
-	// results2 := make(map[string]string)
+	channel := make(chan resultRequest)
 
 	for _, url := range urls {
-		result := "OK"
-		err := hitURL(url)
+		go hitURL(url, channel)
+	}
 
-		if err != nil {
-			result = "FAILED"
-		}
-		results[url] = result
+	for i := 0; i < len(urls); i++ {
+		result := <-channel
+		results[result.url] = result.status
 	}
-	for url, result := range results {
-		fmt.Println(url, result)
+
+	for url, status := range results {
+		fmt.Println(url, status)
 	}
+
 }
 
-func hitURL(url string) error {
-	fmt.Println("Checking:", url)
+/*
+chan<-: send only channel
+*/
+func hitURL(url string, channel chan<- resultRequest) {
 	response, err := http.Get(url)
-
+	status := "OK"
 	if err != nil || response.StatusCode >= 400 {
-		return errRequestFailed
+		status = "FAILED"
 	}
-	return nil
+	channel <- resultRequest{url: url, status: status}
+
 }
