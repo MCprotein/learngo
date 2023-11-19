@@ -13,22 +13,27 @@ func main() {
 		channel: gouroutine과 메인함수, 혹은 다른 goroutine 사이에 정보를 전달하기 위한 방법
 
 	*/
-	channel := make(chan bool)
+	channel := make(chan string)
 	people := [2]string{"nico", "flynn"}
 	for _, person := range people {
 		go isSexy(person, channel)
 	}
 
-	result := <-channel
-	fmt.Println(result)
+	for i := 0; i < len(people); i++ {
+		fmt.Println(<-channel)
+	}
 
-	fmt.Println(<-channel)
+	// fmt.Println("Waiting for messages")
+	// resultOne := <-channel
+	// fmt.Println("Received this message: ", resultOne)
+
+	// fmt.Println("Received this message: ", <-channel)
 
 }
 
-func isSexy(person string, channel chan bool) {
-	time.Sleep(time.Second * 5)
-	channel <- true
+func isSexy(person string, channel chan string) {
+	time.Sleep(time.Second * 10)
+	channel <- person + "is sexy"
 }
 
 func sexyCount(person string) {
