@@ -26,5 +26,5 @@ func init() {
 }
 
 func ExternalPackage() {
-	fmt.Println(uuid.New())
+	fmt.Println(uuid.New(), "uuid.New()")
 }

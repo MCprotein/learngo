@@ -1,4 +1,4 @@
-module github.com/MCprotein/learngo
+module github.com/MCprotein/learngo/grammary
 
 go 1.21.4
 

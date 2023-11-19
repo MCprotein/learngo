@@ -5,10 +5,9 @@ import (
 	abc "fmt"
 	"strings"
 
-	"github.com/MCprotein/learngo/accounts"
-	mydict "github.com/MCprotein/learngo/dict"
-	"github.com/MCprotein/learngo/something"
-
+	"github.com/MCprotein/learngo/grammary/accounts"
+	mydict "github.com/MCprotein/learngo/grammary/dict"
+	"github.com/MCprotein/learngo/grammary/something"
 	"rsc.io/quote/v4"
 )
 
@@ -43,7 +42,7 @@ func main() {
 	*name3 = "dal"
 	abc.Println(name2, "*name3에 의해 변경된 name2")
 
-	abc.Println(quote.Go())
+	abc.Println(quote.Go(), "quote.Go()")
 
 	sth_case := something.CaseStruct{}
 	sth_case.UpperValue = "Upper value."
