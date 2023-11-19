@@ -21,10 +21,24 @@ func main() {
 		"https://academy.nomadcoders.co/",
 	}
 
-	for _, url := range urls {
-		hitURL(url)
-	}
+	results := map[string]string{}
+	/*
+		make: map을 만들어주는 함수
+	*/
+	// results2 := make(map[string]string)
 
+	for _, url := range urls {
+		result := "OK"
+		err := hitURL(url)
+
+		if err != nil {
+			result = "FAILED"
+		}
+		results[url] = result
+	}
+	for url, result := range results {
+		fmt.Println(url, result)
+	}
 }
 
 func hitURL(url string) error {
