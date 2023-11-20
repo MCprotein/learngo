@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -26,14 +28,33 @@ var baseURL string = "https://www.saramin.co.kr/zf_user/search?search_area=main&
 func main() {
 	jobs := []extractedJob{}
 	totalPages := getPages()
-	fmt.Println(totalPages)
 
 	for i := 1; i < totalPages; i++ {
 		extractedJobs := getPage(i)
 		jobs = append(jobs, extractedJobs...)
 
 	}
-	fmt.Println(jobs)
+	writeJobs(jobs)
+	fmt.Println("Done, extracted ", len(jobs))
+}
+
+func writeJobs(jobs []extractedJob) {
+	file, err := os.Create("jobs.csv")
+	checkErr(err)
+
+	w := csv.NewWriter(file)
+	defer w.Flush()
+
+	headers := []string{"ID", "Location", "Title", "Salary", "Career", "Company", "Education"}
+	wErr := w.Write(headers)
+	checkErr(wErr)
+
+	for _, job := range jobs {
+		jobSlice := []string{"https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=" + job.id, job.location, job.title, job.salary, job.career, job.company, job.education}
+		jwErr := w.Write(jobSlice)
+		checkErr(jwErr)
+	}
+
 }
 
 func getPage(page int) []extractedJob {
