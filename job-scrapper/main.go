@@ -27,38 +27,34 @@ var baseURL string = "https://www.saramin.co.kr/zf_user/search?search_area=main&
 
 func main() {
 	jobs := []extractedJob{}
+	c := make(chan []extractedJob)
 	totalPages := getPages()
 
 	for i := 1; i < totalPages; i++ {
-		extractedJobs := getPage(i)
-		jobs = append(jobs, extractedJobs...)
+		go getPage(i, c)
 
 	}
-	writeJobs(jobs)
-	fmt.Println("Done, extracted ", len(jobs))
-}
 
-func writeJobs(jobs []extractedJob) {
-	file, err := os.Create("jobs.csv")
-	checkErr(err)
+	for i := 1; i < totalPages; i++ {
+		extractedJobs := <-c
+		jobs = append(jobs, extractedJobs...)
+	}
 
-	w := csv.NewWriter(file)
-	defer w.Flush()
+	csvChannel := make(chan error)
+	go writeJobs(jobs, csvChannel)
 
-	headers := []string{"ID", "Location", "Title", "Salary", "Career", "Company", "Education"}
-	wErr := w.Write(headers)
-	checkErr(wErr)
-
-	for _, job := range jobs {
-		jobSlice := []string{"https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=" + job.id, job.location, job.title, job.salary, job.career, job.company, job.education}
-		jwErr := w.Write(jobSlice)
+	for i := 0; i < len(jobs); i++ {
+		jwErr := <-csvChannel
 		checkErr(jwErr)
 	}
 
+	fmt.Println("Done, extracted ", len(jobs))
 }
 
-func getPage(page int) []extractedJob {
+func getPage(page int, mainC chan<- []extractedJob) {
 	jobs := []extractedJob{}
+	c := make(chan extractedJob)
+
 	pageUrl := baseURL + "&recruitPage=" + strconv.Itoa(page)
 	fmt.Println("Requesting ", pageUrl)
 	response, err := http.Get(pageUrl)
@@ -73,10 +69,15 @@ func getPage(page int) []extractedJob {
 	searchCards := doc.Find(".item_recruit")
 
 	searchCards.Each(func(i int, card *goquery.Selection) {
-		job := extractJob(card)
-		jobs = append(jobs, job)
+		go extractJob(card, c)
 	})
-	return jobs
+
+	for i := 0; i < searchCards.Length(); i++ {
+		job := <-c
+		jobs = append(jobs, job)
+	}
+
+	mainC <- jobs
 }
 
 func getPages() int {
@@ -115,7 +116,7 @@ func cleanString(str string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
 }
 
-func extractJob(card *goquery.Selection) extractedJob {
+func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 	id, _ := card.Attr("value")
 
 	title := cleanString(card.Find(".area_job .job_tit>a").Text())
@@ -147,6 +148,25 @@ func extractJob(card *goquery.Selection) extractedJob {
 
 	})
 
-	return extractedJob{id: id, title: strings.TrimSpace(title), location: location, salary: salary, career: career, company: company, education: education}
+	c <- extractedJob{id: id, title: strings.TrimSpace(title), location: location, salary: salary, career: career, company: company, education: education}
+
+}
+
+func writeJobs(jobs []extractedJob, csvChannel chan<- error) {
+	file, err := os.Create("jobs.csv")
+	checkErr(err)
+
+	w := csv.NewWriter(file)
+	defer w.Flush()
+
+	headers := []string{"ID", "Location", "Title", "Salary", "Career", "Company", "Education"}
+	wErr := w.Write(headers)
+	checkErr(wErr)
+
+	for _, job := range jobs {
+		jobSlice := []string{"https://www.saramin.co.kr/zf_user/jobs/relay/view?isMypage=no&rec_idx=" + job.id, job.location, job.title, job.salary, job.career, job.company, job.education}
+		jwErr := w.Write(jobSlice)
+		csvChannel <- jwErr
+	}
 
 }
