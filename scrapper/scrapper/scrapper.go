@@ -112,18 +112,18 @@ func checkCode(response *http.Response) {
 	}
 }
 
-func cleanString(str string) string {
+func CleanString(str string) string {
 	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
 }
 
 func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 	id, _ := card.Attr("value")
 
-	title := cleanString(card.Find(".area_job .job_tit>a").Text())
+	title := CleanString(card.Find(".area_job .job_tit>a").Text())
 
-	location := cleanString(card.Find(".job_condition>span>a").Text())
+	location := CleanString(card.Find(".job_condition>span>a").Text())
 
-	company := cleanString(card.Find(".area_corp .corp_name>a").Text())
+	company := CleanString(card.Find(".area_corp .corp_name>a").Text())
 
 	career := ""
 	education := ""
@@ -134,16 +134,16 @@ func extractJob(card *goquery.Selection, c chan<- extractedJob) {
 		}
 
 		if i == 1 {
-			career = cleanString(description.Text())
+			career = CleanString(description.Text())
 		}
 
 		switch i {
 		case 1:
-			career = cleanString(description.Text())
+			career = CleanString(description.Text())
 		case 2:
-			education = cleanString(description.Text())
+			education = CleanString(description.Text())
 		case 4:
-			salary = cleanString(description.Text())
+			salary = CleanString(description.Text())
 		}
 
 	})
